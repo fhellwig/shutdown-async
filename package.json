@@ -1,0 +1,23 @@
+{
+  "name": "shutdown-async",
+  "version": "1.0.0",
+  "description": "Asynchronous shutdown handlers for node.js processes.",
+  "main": "shutdown-async.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fhellwig/shutdown-async.git"
+  },
+  "keywords": [
+    "shutdown",
+    "async"
+  ],
+  "author": "Frank Hellwig <frank@hellwig.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fhellwig/shutdown-async/issues"
+  },
+  "homepage": "https://github.com/fhellwig/shutdown-async#readme"
+}
