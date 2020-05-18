@@ -68,7 +68,7 @@ shutdown.addHandler(doNothing);
 
 setTimeout(() => {
   console.log('Simulating Ctrl+C');
-  process.kill(process.pid, 'SIGINT');
+  process.emit('SIGINT');
 }, 2000);
 
 //------------------------------------------------------------------------------
