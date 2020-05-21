@@ -24,6 +24,8 @@ SOFTWARE.
 
 'use strict';
 
+const SIGNALS = ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGBREAK'];
+
 class ShutdownQueue {
   constructor() {
     this._queue = [];
@@ -32,6 +34,9 @@ class ShutdownQueue {
 
   addHandler(handler) {
     if (typeof handler === 'function') {
+      if (this._queue.length === 0) {
+        this._registerExitMethod();
+      }
       this._queue.push(handler);
     } else {
       throw new Error('Expected a function for shutdown handler.');
@@ -67,6 +72,13 @@ class ShutdownQueue {
   getErrors() {
     return this._errors;
   }
+
+  _registerExitMethod() {
+    const exit = this.exitGracefully.bind(this);
+    SIGNALS.forEach((signal) => {
+      process.on(signal, exit);
+    });
+  }
 }
 
 function isPromise(result) {
@@ -78,11 +90,6 @@ const shutdownQueue = new ShutdownQueue();
 const addHandler = shutdownQueue.addHandler.bind(shutdownQueue);
 const exitGracefully = shutdownQueue.exitGracefully.bind(shutdownQueue);
 const getErrors = shutdownQueue.getErrors.bind(shutdownQueue);
-
-process.once('SIGINT', exitGracefully);
-process.once('SIGTERM', exitGracefully);
-process.once('SIGHUP', exitGracefully);
-process.once('SIGBREAK', exitGracefully);
 
 module.exports = {
   addHandler,
