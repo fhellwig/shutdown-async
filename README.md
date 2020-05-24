@@ -8,6 +8,8 @@ This module manages both synchronous and asynchronous exit handlers. An asynchro
 
 The exit handlers are run when an exit signal (`SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`) is received. The `process.exit()` method is then called with the number of errors encountered as the exit status. This will be zero for a successful shutdown or a positive integer for a shutdown where errors occurred.
 
+An additional feature is that a carriage return (`\r`) is written to `stdout` on `SIGINT` so that the echoed `^C` character does not offset any console output on shutdown.
+
 ## Install
 
 ```
@@ -28,7 +30,7 @@ shutdown.addHandler(handler);
 shutdown.exitGracefully();
 ```
 
-- Called automatically on `SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`. Runs the exit handlers in the order they were added and then calls `process.exit(count)` where `count` is the number of errors (exceptions thrown or promises rejected) encountered while running the exit handlers. You need not call this function from your code.
+- Called automatically on `SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`. Runs the exit handlers in the order they were added and then calls `process.exit(count)` where `count` is the number of errors (exceptions thrown or promises rejected) encountered while running the exit handlers. Calling this function from your code is optional but not required.
 
 ```javascript
 shutdown.getErrors();

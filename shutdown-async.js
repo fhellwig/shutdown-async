@@ -35,7 +35,7 @@ class ShutdownQueue {
   addHandler(handler) {
     if (typeof handler === 'function') {
       if (this._queue.length === 0) {
-        this._registerExitMethod();
+        registerHandler(this.exitGracefully.bind(this));
       }
       this._queue.push(handler);
     } else {
@@ -72,17 +72,24 @@ class ShutdownQueue {
   getErrors() {
     return this._errors;
   }
-
-  _registerExitMethod() {
-    const exit = this.exitGracefully.bind(this);
-    SIGNALS.forEach((signal) => {
-      process.on(signal, exit);
-    });
-  }
 }
 
 function isPromise(result) {
   return result != null && typeof result === 'object' && typeof result.then === 'function';
+}
+
+function registerHandler(onExit) {
+  // On SIGINT, output a carriage return so that the the next log
+  // statement to the console is printed at the start of the line.
+  if (process.stdout && typeof process.stdout.write === 'function') {
+    process.on('SIGINT', () => {
+      process.stdout.write('\r');
+    });
+  }
+  // Now register the specified exit handler for each of the signals.
+  SIGNALS.forEach((signal) => {
+    process.on(signal, onExit);
+  });
 }
 
 const shutdownQueue = new ShutdownQueue();
