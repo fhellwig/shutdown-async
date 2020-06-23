@@ -24,7 +24,7 @@ SOFTWARE.
 
 'use strict';
 
-const shutdown = require('./shutdown-async');
+const { addExitHandler, getExitErrors } = require('./shutdown-async');
 
 //------------------------------------------------------------------------------
 // Four exit handlers that each do something different.
@@ -57,10 +57,10 @@ function doNothing() {
 // Register the exit handlers.
 //------------------------------------------------------------------------------
 
-shutdown.addHandler(waitOneAndResolve);
-shutdown.addHandler(waitOneAndReject);
-shutdown.addHandler(throwException);
-shutdown.addHandler(doNothing);
+addExitHandler(waitOneAndResolve);
+addExitHandler(waitOneAndReject);
+addExitHandler(throwException);
+addExitHandler(doNothing);
 
 //------------------------------------------------------------------------------
 // Simulate Ctrl+C after two seconds.
@@ -77,7 +77,7 @@ setTimeout(() => {
 //------------------------------------------------------------------------------
 
 process.on('exit', () => {
-  const nerrors = shutdown.getErrors().length;
+  const nerrors = getExitErrors().length;
   const expected = 2;
   console.log(`process.exit(${nerrors})`);
   if (nerrors === expected) {

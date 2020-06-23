@@ -18,22 +18,28 @@ npm install --save shutdown-async
 
 ## API
 
-```javascript
-const shutdown = require('shutdown-async');
+This package supports both CommonJS (`require`) and ES modules (`import`).
 
-shutdown.addHandler(handler);
+```javascript
+import { addExitHandler } from 'shutdown-async';
+
+addExitHandler(handler);
 ```
 
 - Adds the specified handler to the queue. The exit handler can be a synchronous function that can throw an exception or an asynchronous function that returns a promise.
 
 ```javascript
-shutdown.exitGracefully();
+import { exitGracefully } from 'shutdown-async';
+
+exitGracefully();
 ```
 
 - Called automatically on `SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`. Runs the exit handlers in the order they were added and then calls `process.exit(count)` where `count` is the number of errors (exceptions thrown or promises rejected) encountered while running the exit handlers. Calling this function from your code is optional but not required.
 
 ```javascript
-shutdown.getErrors();
+import { getExitErrors } from 'shutdown-async';
+
+getExitErrors();
 ```
 
 - Returns an array of errors encountered while running the exit handlers. Useful for testing. You need not call this function from your code.

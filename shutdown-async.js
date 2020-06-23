@@ -32,7 +32,7 @@ class ShutdownQueue {
     this._errors = [];
   }
 
-  addHandler(handler) {
+  addExitHandler(handler) {
     if (typeof handler === 'function') {
       if (this._queue.length === 0) {
         registerHandler(this.exitGracefully.bind(this));
@@ -69,7 +69,7 @@ class ShutdownQueue {
     }
   }
 
-  getErrors() {
+  getExitErrors() {
     return this._errors;
   }
 }
@@ -94,12 +94,12 @@ function registerHandler(onExit) {
 
 const shutdownQueue = new ShutdownQueue();
 
-const addHandler = shutdownQueue.addHandler.bind(shutdownQueue);
+const addExitHandler = shutdownQueue.addExitHandler.bind(shutdownQueue);
 const exitGracefully = shutdownQueue.exitGracefully.bind(shutdownQueue);
-const getErrors = shutdownQueue.getErrors.bind(shutdownQueue);
+const getExitErrors = shutdownQueue.getExitErrors.bind(shutdownQueue);
 
 module.exports = {
-  addHandler,
+  addExitHandler,
   exitGracefully,
-  getErrors
+  getExitErrors,
 };
