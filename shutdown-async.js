@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2020 Frank Hellwig
+Copyright (c) 2022 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -94,12 +94,6 @@ function registerHandler(onExit) {
 
 const shutdownQueue = new ShutdownQueue();
 
-const addExitHandler = shutdownQueue.addExitHandler.bind(shutdownQueue);
-const exitGracefully = shutdownQueue.exitGracefully.bind(shutdownQueue);
-const getExitErrors = shutdownQueue.getExitErrors.bind(shutdownQueue);
-
-module.exports = {
-  addExitHandler,
-  exitGracefully,
-  getExitErrors,
-};
+export const addExitHandler = shutdownQueue.addExitHandler.bind(shutdownQueue);
+export const exitGracefully = shutdownQueue.exitGracefully.bind(shutdownQueue);
+export const getExitErrors = shutdownQueue.getExitErrors.bind(shutdownQueue);

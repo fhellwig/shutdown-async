@@ -1,13 +1,9 @@
 {
   "name": "shutdown-async",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Asynchronous shutdown handlers for node.js processes.",
-  "type": "commonjs",
   "main": "./shutdown-async.js",
-  "exports": {
-    "import": "./shutdown-async.mjs",
-    "require": "./shutdown-async.js"
-  },
+  "type": "module",
   "scripts": {
     "test": "node test"
   },

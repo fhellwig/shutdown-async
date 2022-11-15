@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2020 Frank Hellwig
+Copyright (c) 2022 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ SOFTWARE.
 
 'use strict';
 
-const { addExitHandler, getExitErrors } = require('./shutdown-async');
+import { addExitHandler, getExitErrors } from './shutdown-async.js';
 
 //------------------------------------------------------------------------------
 // Four exit handlers that each do something different.

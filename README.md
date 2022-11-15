@@ -18,8 +18,6 @@ npm install --save shutdown-async
 
 ## API
 
-This package supports both CommonJS (`require`) and ES modules (`import`).
-
 ```javascript
 import { addExitHandler } from 'shutdown-async';
 
@@ -52,7 +50,7 @@ The code in the `test.js` file serves as an example and is the module run by `np
 
 MIT License
 
-Copyright (c) 2020 Frank Hellwig
+Copyright (c) 2022 Frank Hellwig
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
