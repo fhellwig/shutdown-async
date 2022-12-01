@@ -60,7 +60,7 @@ function closeDatabase() {
 addExitHandler(closeDatabase);
 ```
 
-The output now will be as follows:
+When the program is stopped (either by a signal or by calling `exitGracefully` - discussed below), the output will be as follows:
 
 ```
 Closing database...
