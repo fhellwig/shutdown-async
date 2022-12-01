@@ -1,5 +1,6 @@
 /**
- * Simulate closing a database in an asynchronous function returning a promise.
+ * Simulate closing a database in an asynchronous function
+ * returning a promise.
  */
 function closeDatabase() {
   return new Promise((resolve) => {
@@ -12,8 +13,8 @@ function closeDatabase() {
 }
 
 /**
- * Close the database on exit. Note: This will not work correctly as you
- * cannot call asynchronous functions from an exit handler.
+ * Close the database on exit. Note: This will not work correctly
+ * as you cannot call asynchronous functions from an exit handler.
  */
 process.on('exit', async () => {
   console.log('Shutting down...');
