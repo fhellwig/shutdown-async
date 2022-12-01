@@ -2,11 +2,82 @@
 
 Asynchronous shutdown handlers for node.js processes.
 
+## Example
+
+Consider a database close operation that is an asynchronous function that must be run at shutdown. That shutdown can be invoked by calling `process.exit` or by pressing `^C`.
+
+```javascript
+/**
+ * Simulate closing a database in an asynchronous function returning a promise.
+ */
+function closeDatabase() {
+  return new Promise((resolve) => {
+    console.log('Closing database...');
+    setTimeout(() => {
+      console.log('Database closed');
+      resolve();
+    }, 1000);
+  });
+}
+```
+
+Now we call that function in our exit handler.
+
+```javascript
+/**
+ * Close the database on exit. Note: This will not work correctly as you
+ * cannot call asynchronous functions from an exit handler.
+ */
+process.on('exit', async () => {
+  console.log('Shutting down...');
+  await closeDatabase();
+  console.log('Shutdown');
+});
+```
+
+The output on shutdown will be as follows:
+
+```
+Shutting down...
+Closing database...
+```
+
+Clearly, this isn't what we want. That is where this module comes in to help. The following is an example of using this module to accomplish the asynchronous database close action.
+
+```javascript
+import { addExitHandler, exitGracefully } from '../shutdown-async.js';
+
+function closeDatabase() {
+  return new Promise((resolve) => {
+    console.log('Closing database...');
+    setTimeout(() => {
+      console.log('Database closed');
+      resolve();
+    }, 1000);
+  });
+}
+
+addExitHandler(closeDatabase);
+```
+
+The output now will be as follows:
+
+```
+Closing database...
+Database closed
+```
+
+The code for both the non-working and working examples is in the `examples` folder.
+
+## Details
+
 Processes must perform asynchronous tasks on exit (stopping a server or closing a database, for example). These asynchronous tasks cannot be performed by handling the `'exit'` event as only synchronous operations are permitted.
 
 This module manages both synchronous and asynchronous exit handlers. An asynchronous exit handler is a function returning a promise. Both exceptions thrown by synchronous exit handlers and promises rejected by asynchronous exit handlers are retained.
 
-The exit handlers are run when an exit signal (`SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`) is received. The `process.exit()` method is then called with the number of errors encountered as the exit status. This will be zero for a successful shutdown or a positive integer for a shutdown where errors occurred.
+The exit handlers are run when an exit signal (`SIGINT`, `SIGTERM`, `SIGHUP`, or `SIGBREAK`) is received or you call `exitGracefully`. (Calling `process.exit` instead of calling `exitGracefully` will not work as the asynchronous exit handlers will not be called.)
+
+Once all exit handlers have been called, the `process.exit` method is called with the number of errors encountered as the exit status. This will be zero for a successful shutdown or a positive integer for a shutdown where errors occurred.
 
 An additional feature is that a carriage return (`\r`) is written to `stdout` on `SIGINT` so that the echoed `^C` character does not offset any console output on shutdown.
 
