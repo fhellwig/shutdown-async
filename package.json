@@ -1,6 +1,6 @@
 {
   "name": "shutdown-async",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Asynchronous shutdown handlers for node.js processes.",
   "main": "./shutdown-async.js",
   "type": "module",
